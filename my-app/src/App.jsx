@@ -1,18 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import Header from './components/Header';
+import BookList from './components/BookList';
+import Footer from './components/Footer';
+import './App.css';
 
 function App() {
   return (
-<>
-    <header className='text-6xl text-amber-600' >Impressive Books
-    </header>
-
- 
-    </>
+    <div className="flex flex-col min-h-screen bg-white text-black">
+      <Header />
+      <BookList />
+      <Footer />
+    </div>
   );
 }
 
 export default App;
-
