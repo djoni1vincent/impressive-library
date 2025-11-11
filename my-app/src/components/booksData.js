@@ -33,7 +33,6 @@ const books = [
   { title: "Madame Bovary" },
   { title: "The Scarlet Letter" },
   { title: "Great Expectations" },
-  { title: "Little Women" },
   { title: "The Grapes of Wrath" },
   { title: "A Tale of Two Cities" },
   { title: "Les Fleurs du mal" },

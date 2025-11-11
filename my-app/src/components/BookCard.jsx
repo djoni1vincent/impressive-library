@@ -1,18 +1,4 @@
 // BookCard.jsx
-import React, { useEffect, useState } from "react";
-
-/*
-  BookCard принимает:
-    - title (string) — название книги (обязательно)
-  Что делает внутри:
-    - на mount делает fetch к Open Library: search.json?title=...
-    - берёт первый результат (docs[0]) и из него получает:
-        * cover_i -> строит URL обложки
-        * author_name[0]
-        * first_publish_year
-        * snippet (если есть)
-    - рендерит картинку + подпись
-*/
 
 const BookCard = ({ title, author, year, snippet, coverUrl }) => {
   return (
