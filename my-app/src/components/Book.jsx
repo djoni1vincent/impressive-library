@@ -24,10 +24,8 @@ const Book = ({ title }) => {
     const fetchBookData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&limit=1`
-        );
-        const data = await response.json();
+        const res = await fetch(`http://localhost:5000/api/books?title=${title}`);
+const data = await res.json(); // уже объект
         if (data.docs && data.docs.length > 0) {
           const book = data.docs[0];
           const bookInfo = {
