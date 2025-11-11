@@ -1,73 +1,80 @@
-import React, { useEffect, useState } from "react";
-import BookCard from "./BookCard";
-import books from "./booksData";
+import React, { useState } from "react";
+import Book from "./Book";
+import booksData from "./booksData";
+
+const BOOKS_PER_PAGE = 9;
 
 const BookList = () => {
-  const [bookData, setBookData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [visibleCount, setVisibleCount] = useState(BOOKS_PER_PAGE);
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const results = [];
+  // разделяем книги
+  const carouselBooks = booksData.slice(0, 9);
+  const otherBooks = booksData.slice(9);
 
-      for (const title of books) {
-        try {
-          const res = await fetch(
-            `https://openlibrary.org/search.json?title=${encodeURIComponent(
-              title
-            )}&limit=1`
-          );
-          const data = await res.json();
-          const doc = data.docs?.[0];
+  // фильтруем для поиска только из otherBooks
+  const filteredBooks = otherBooks.filter((book) =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-          results.push({
-            title,
-            author: doc?.author_name?.[0] || "",
-            year: doc?.first_publish_year || "",
-            snippet: doc?.first_sentence?.[0] || doc?.subtitle || "",
-            coverUrl: doc?.cover_i
-              ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`
-              : null,
-          });
-        } catch (e) {
-          results.push({
-            title,
-            author: "",
-            year: "",
-            snippet: "",
-            coverUrl: null,
-          });
-        }
-      }
+  const visibleBooks = filteredBooks.slice(0, visibleCount);
 
-      setBookData(results);
-    };
-
-    fetchBooks();
-  }, []);
-
-  const carouselBooks = bookData.slice(0, 9);
-  const recommendedBooks = bookData.slice(9, 19);
+  const handleShowMore = () => {
+    setVisibleCount((prev) => prev + BOOKS_PER_PAGE);
+  };
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl mb-4 text-center">Books</h2>
+    <>
+      {/* Поиск */}
+      <div className="p-4">
+        <input
+          type="text"
+          placeholder="Search books..."
+          className="border p-2 rounded w-full mb-4"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setVisibleCount(BOOKS_PER_PAGE); // сброс при новом поиске
+          }}
+        />
+      </div>
 
-      <div className="flex gap-4 animate-scroll-right w-max border-b-3 py-4  ">
-        {[...carouselBooks, ...carouselBooks].map((book, i) => (
-          <div key={i} className="px-2">
-            <BookCard {...book} />
+      {/* Карусель */}
+      <main className="p-4">
+        <h2 className="text-2xl mb-4">Books Carousel</h2>
+        <div className="w-full overflow-hidden relative">
+          <div className="flex animate-scroll-right">
+            {carouselBooks.concat(carouselBooks).map((book, index) => (
+              <div key={index} className="mx-4 shrink-0">
+                <Book title={book.title} />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      </main>
 
-      {/* Рекомендации */}
-      <h2 className="text-2xl mb-10 mt-10 text-center">Recommendations</h2>
-      <div className="grid grid-cols-5 gap-4  justify-items-center">
-        {recommendedBooks.map((book, i) => (
-          <BookCard key={i} {...book} />
-        ))}
-      </div>
-    </div>
+      {/* Рекомендации / поиск */}
+      <section id="books" className="m-6 p-4 border-t-2 border-gray-300">
+        <h2 className="text-2xl mb-4">Recommendations</h2>
+        <div className="flex flex-wrap gap-2 justify-center mt-4">
+          {visibleBooks.map((book, index) => (
+            <Book key={index} title={book.title} />
+          ))}
+        </div>
+
+        {/* Кнопка "Показать ещё" */}
+        {visibleCount < filteredBooks.length && (
+          <div className="text-center mt-4">
+            <button
+              onClick={handleShowMore}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Показать ещё
+            </button>
+          </div>
+        )}
+      </section>
+    </>
   );
 };
 

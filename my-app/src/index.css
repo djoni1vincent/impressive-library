@@ -17,3 +17,14 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #ff0000 transparent;
 }
+
+@keyframes scroll-right {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll-right {
+  display: flex;
+  gap: 16px;
+  animation: scroll-right 40s linear infinite;
+}
