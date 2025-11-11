@@ -1,1 +1,11 @@
 @import "tailwindcss";
+@keyframes scroll-right {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* половина ширины контейнера, так как дублируем книги */
+}
+
+.animate-scroll-right {
+  display: flex;
+  gap: 0.5rem;
+  animation: scroll-right 20s linear infinite; /* 20s — скорость, можешь менять */
+}
