@@ -1,35 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
-import BookList from './components/BookList';
-import Footer from './components/Footer';
-import './App.css';
-
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import BookPage from "./pages/BookPage";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import BookList from "./components/BookList";
+import Library from "./pages/Library";
+import "./App.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-
+    const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-white text-black">
-        <p className="text-xl">Loading books...</p>
+      <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
+        <p className=" text-xl">Loading books...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-white text-black">
-      <Header />
-      <BookList />
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+            <div className="bg-gray-900 text-white mx-auto px-50 w-full">
+              <Header />  
+              <BookList />
+              <Footer />
+             </div>
+            </>
+          }
+        />
+        <Route path="/book/:title" element={<BookPage />} />
+        <Route path="/library" element={<Library />} />
+      </Routes>
+    </Router>
   );
 }
 

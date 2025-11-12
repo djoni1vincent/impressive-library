@@ -4,7 +4,6 @@ const books = [
   { title: "Pride and Prejudice" },
   { title: "Harry Potter and the Philosopher's Stone" },
   { title: "The Lord of the Rings" },
-  { title: "The Man in the Iron Mask" },
   { title: "The Catcher in the Rye" },
   { title: "A Game of Thrones" },
   { title: "The Deerslayer" },

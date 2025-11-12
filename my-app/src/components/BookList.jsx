@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Book from "./Book";
 import booksData from "./booksData";
+import { Link } from "react-router-dom";
 
 const BOOKS_PER_PAGE = 9;
 
@@ -8,17 +9,16 @@ const BookList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleCount, setVisibleCount] = useState(BOOKS_PER_PAGE);
 
-  const filteredBooks = booksData.filter((book) =>
+  const carouselBooks = booksData.slice(0, 9);        // для карусели
+  const recommendedBooks = booksData.slice(9);        // для рекомендаций
+
+  const filteredBooks = recommendedBooks.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const visibleBooks = filteredBooks.slice(0, visibleCount);
 
-  const carouselBooks = booksData.slice(0, 9);
-
-  const handleShowMore = () => {
-    setVisibleCount((prev) => prev + BOOKS_PER_PAGE);
-  };
+  const handleShowMore = () => setVisibleCount((prev) => prev + BOOKS_PER_PAGE);
 
   return (
     <>
@@ -37,29 +37,31 @@ const BookList = () => {
       </div>
 
       {/* Карусель */}
-      <main className="p-4">
-        <h2 className="text-2xl mb-4">Featured</h2>
-        <div className="w-full overflow-hidden relative">
-          <div className="flex animate-scroll-right">
-            {carouselBooks.map((book, index) => (
-              <div key={index} className="mx-4 shrink-0">
-                <Book title={book.title} />
-              </div>
-            ))}
-          </div>
+<main className="p-4">
+  <h2 className="text-2xl mb-4">Featured</h2>
+  <div className="w-full overflow-hidden relative">
+    <div className="flex animate-scroll-right">
+      {carouselBooks.map((book, index) => (
+        <div key={index} className="mx-4 shrink-0">
+          <Link to={`/book/${encodeURIComponent(book.title)}`}>
+            <Book title={book.title} />
+          </Link>
         </div>
-      </main>
+      ))}
+    </div>
+  </div>
+</main>
+
 
       {/* Рекомендации */}
       <section id="books" className="m-6 p-4 border-t-2 border-gray-300">
         <h2 className="text-2xl mb-4">Recommendations</h2>
         <div className="flex flex-wrap gap-2 justify-center mt-4">
           {visibleBooks.map((book, index) => (
-            <div
-              key={book.title}
-              className={`${index >= visibleCount ? "hidden" : "block"}`}
-            >
-              <Book title={book.title} />
+            <div key={book.title} className="block">
+              <Link to={`/book/${encodeURIComponent(book.title)}`}>
+                <Book title={book.title} />
+              </Link>
             </div>
           ))}
         </div>

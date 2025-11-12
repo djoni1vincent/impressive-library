@@ -26,5 +26,7 @@ body {
 .animate-scroll-right {
   display: flex;
   gap: 16px;
-  animation: scroll-right 40s linear infinite;
+  animation: scroll-right 30s linear infinite;
 }
+
+
