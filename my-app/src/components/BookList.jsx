@@ -8,14 +8,12 @@ const BookList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleCount, setVisibleCount] = useState(BOOKS_PER_PAGE);
 
-  // фильтруем книги по поиску
   const filteredBooks = booksData.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const visibleBooks = filteredBooks.slice(0, visibleCount);
 
-  // книги для карусели — просто первые 9 книг без дублирования
   const carouselBooks = booksData.slice(0, 9);
 
   const handleShowMore = () => {

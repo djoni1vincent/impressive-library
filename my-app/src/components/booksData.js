@@ -35,17 +35,26 @@ const books = [
   { title: "The Grapes of Wrath" },
   { title: "A Tale of Two Cities" },
   { title: "Les Fleurs du mal" },
-
-
-
-
-
-
-
-
-
-
-
+  { title: "Moby-Dick" },
+  { title: "The Sun Also Rises" },
+  { title: "Invisible Man" },
+  { title: "Beloved" },
+  { title: "The Sound and the Fury" },
+  { title: "Mrs Dalloway" },
+  { title: "The Old Man and the Sea" },
+  { title: "The Handmaid's Tale" },
+  { title: "Slaughterhouse-Five" },
+  { title: "The Kite Runner" },
+  { title: "Life of Pi" },
+  { title: "The Alchemist" },
+  { title: "Norwegian Wood" },
+  { title: "The Road" },
+  { title: "The Color Purple" },
+  { title: "Midnight's Children" },
+  { title: "The Stranger" },
+  { title: "Siddhartha" },
+  { title: "The Bell Jar" },
+  { title: "On the Road" }
 ];
 
 export default books;
