@@ -12,7 +12,6 @@ const books = [
   { title: "Le Comte de Monte-Cristo" },
   { title: "Whose Body?" },
   { title: "The Great Gatsby" },
-  { title: "War and Peace" },
   { title: "The Odyssey" },
   { title: "Crime and Punishment" },
   { title: "The Brothers Karamazov" },

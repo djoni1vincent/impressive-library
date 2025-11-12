@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BookCard from "./BookCard";
 
-// Простой кэш для уже загруженных книг
 const bookCache = {};
 
 const SkeletonBook = () => (
@@ -19,15 +18,26 @@ const Book = ({ title }) => {
   const [loading, setLoading] = useState(!bookCache[title]);
 
   useEffect(() => {
-    if (bookCache[title]) return; // Берём из кэша
+    let cancelled = false;
 
     const fetchBookData = async () => {
+      if (bookCache[title]) {
+        setBookData(bookCache[title]);
+        return;
+      }
+
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/books?title=${title}`);
-const data = await res.json(); // уже объект
-        if (data.docs && data.docs.length > 0) {
-          const book = data.docs[0];
+        const res = await fetch(`http://localhost:5000/api/books?title=${encodeURIComponent(title)}`);
+        const data = await res.json();
+
+        if (!cancelled && data && data.docs && data.docs.length > 0) {
+          const book = data.docs.find(
+            (b) =>
+              b.title &&
+              b.title.toLowerCase().trim() === title.toLowerCase().trim()
+          ) || data.docs[0];
+
           const bookInfo = {
             title: book.title,
             author: book.author_name ? book.author_name[0] : "Unknown",
@@ -41,19 +51,25 @@ const data = await res.json(); // уже объект
               ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`
               : null,
           };
-          bookCache[title] = bookInfo; // Сохраняем в кэш
+
+          bookCache[title] = bookInfo;
           setBookData(bookInfo);
-        } else {
+        } else if (!cancelled) {
           setBookData(null);
         }
       } catch (error) {
+        if (!cancelled) setBookData(null);
         console.error(error);
-        setBookData(null);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchBookData();
+
+    return () => {
+      cancelled = true;
+    };
   }, [title]);
 
   if (loading) return <SkeletonBook />;
@@ -62,4 +78,4 @@ const data = await res.json(); // уже объект
   return <BookCard {...bookData} />;
 };
 
-export default Book;
+export default React.memo(Book);
